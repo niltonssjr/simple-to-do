@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, PropType } from 'vue'
 import type { CalculatedScheduleType } from '@/providers'
-import { ArrowDownButton, ArrowUpButton, TrashButton } from '@/ui/components';
+import { ArrowDownButton, ArrowUpButton, EditableSpan, TrashButton } from '@/ui/components';
 import { DateHandler } from '@/providers/libraries/day-js';
+import { StringUtils } from '@/providers/utils/string';
 const props = defineProps({
     schedule: {
         type: Object as PropType<CalculatedScheduleType>,
@@ -18,7 +19,7 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['schedule:remove','schedule:move:up', 'schedule:move:down'])
+const emit = defineEmits(['schedule:remove','schedule:move:up', 'schedule:move:down', 'schedule:update'])
 
 const removeSchedule = () => { emit('schedule:remove', props.schedule.id)}
 const moveTaskUp = () => { emit('schedule:move:up', props.schedule.id)}
@@ -40,6 +41,10 @@ const progressBarStyle = computed(() => {
     }
 })
 
+const updateValues = ($event : any, field: string) => {
+    emit('schedule:update', { id: props.schedule.id, [field] : $event })
+}
+
 </script>
 <template>
     <div>
@@ -49,9 +54,20 @@ const progressBarStyle = computed(() => {
                 <span class="start-time">{{ DateHandler.formatToTime(schedule.startTime) }}</span>
                 <span class="finish-time">{{ DateHandler.formatToTime(schedule.finishTime) }}</span>
             </div>
-            <span class="name">
-                {{ schedule.name }}
-            </span>
+            <div class="time">
+                <EditableSpan 
+                    :value="schedule.minutes" 
+                    @value:change="updateValues($event, 'minutes')" 
+                    :display-function="StringUtils.stringifyTime" 
+                    :span-style="{
+                        backgroundColor: 'rgba(0,0,0,0.1)',
+                        padding: '2px 10px',
+                        borderRadius: '8px'
+                    }"/>
+            </div>            
+            <div class="name">
+                <EditableSpan :value="schedule.name" @value:change="updateValues($event, 'name')" />
+            </div>
             <ArrowUpButton @click="moveTaskUp" v-if="showUpButton"/>
             <ArrowDownButton @click="moveTaskDown" v-if="showDownButton"/>
             <TrashButton @click="removeSchedule" />

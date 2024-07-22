@@ -1,5 +1,5 @@
 import { DateHandler } from './../../libraries/day-js/index';
-import { ref, computed, WritableComputedRef, ComputedRef } from 'vue'
+import { ref, computed, WritableComputedRef, ComputedRef, watch } from 'vue'
 import { TaskType, ScheduleType, CalculatedScheduleType } from "../../types";
 import { Utils } from '../utils';
 import { ScheduleListService, ScheduleStartTimeRetrieveService, ScheduleStartTimeStoreService, ScheduleStoreService } from '@/providers/services';
@@ -24,15 +24,21 @@ export function useScheduleManager() {
             id: getNewScheduleId(),
             order: Utils.getNewOrder(scheduleList.value)
         })
-        ScheduleStoreService.execute(scheduleList.value)
     }
 
     const findScheduleIndex = (id: number) => Utils.findIndexById(scheduleList.value, id)
 
+    const updateSchedule = ({ id, ...otherProps} : Record<string, any>) => {
+        const scheduleIndex = findScheduleIndex(id)
+        scheduleList.value[scheduleIndex] = {
+            ...scheduleList.value[scheduleIndex],
+            ...otherProps
+        }
+    }
+
     const removeSchedule = (id: number) => {
         const scheduleIndex = findScheduleIndex(id)
         scheduleList.value.splice(scheduleIndex, 1)
-        ScheduleStoreService.execute(scheduleList.value)
     }
 
     const currentStartDateTime : WritableComputedRef<string> = computed({
@@ -114,6 +120,12 @@ export function useScheduleManager() {
         ScheduleStartTimeStoreService.execute(currentTime)
     }
 
+    const stringifiedScheduleList = computed(() => JSON.stringify(scheduleList.value))
+
+    watch(stringifiedScheduleList, () => {
+        ScheduleStoreService.execute(scheduleList.value)
+    })
+
     return {
         createSchedule,
         removeSchedule,
@@ -123,7 +135,8 @@ export function useScheduleManager() {
         moveTaskDown,
         setStartTime,
         setStartTimeToNow,
-        currentDateTime
+        currentDateTime,
+        updateSchedule
     }
-
 }
+

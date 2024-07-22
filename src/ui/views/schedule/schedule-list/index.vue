@@ -3,7 +3,7 @@ import ScheduleCard from '@/ui/views/schedule/schedule-card/index.vue'
 
 import { useScheduleManager } from '@/providers'
 import { computed } from 'vue';
-const { getScheduleList, removeSchedule, moveTaskDown, moveTaskUp } = useScheduleManager()
+const { getScheduleList, removeSchedule, moveTaskDown, moveTaskUp, updateSchedule } = useScheduleManager()
 
 const removeTaskFromList = (id: number) => {
     removeSchedule(id)
@@ -22,6 +22,7 @@ const lastIndex = computed(() => getScheduleList.value.length ? getScheduleList.
         @schedule:remove="removeTaskFromList" 
         @schedule:move:up="moveTaskUp" 
         @schedule:move:down="moveTaskDown"
+        @schedule:update="updateSchedule"
         :show-down-button="taskIndex !== lastIndex"
         :show-up-button="taskIndex !== firstIndex"
         />

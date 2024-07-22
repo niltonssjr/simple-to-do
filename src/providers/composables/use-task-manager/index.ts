@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { TaskType } from "../../types";
 import { TaskListService, TaskStoreService } from '@/providers/services';
 import { useScheduleManager } from '../use-schedule-manager';
@@ -16,21 +16,21 @@ export function useTaskManager() {
             ...task,
             id: getNewTaskId()
         })
-        TaskStoreService.execute(taskList.value)
     }
 
     const findTaskIndex = (id: number) => Utils.findIndexById(taskList.value, id)
 
-    const updateTask = (id: number, task: TaskType) => {
+    const updateTask = ({ id, ...otherProps} : Record<string, any>) => {
         const taskIndex = findTaskIndex(id)
-        taskList.value[taskIndex] = { ...task}
-        TaskStoreService.execute(taskList.value)
+        taskList.value[taskIndex] = { 
+            ...taskList.value[taskIndex],
+            ...otherProps
+        }
     }
 
     const removeTask = (id: number) => {
         const taskIndex = findTaskIndex(id)
         taskList.value.splice(taskIndex, 1)
-        TaskStoreService.execute(taskList.value)
     }
 
     const getTaskList = computed(() => taskList.value)
@@ -40,6 +40,12 @@ export function useTaskManager() {
         const taskToAdd = taskList.value[index]
         createSchedule(taskToAdd)
     }
+
+    const stringifiedTaskList = computed(() => JSON.stringify(taskList.value))
+
+    watch(stringifiedTaskList, () => {
+        TaskStoreService.execute(taskList.value)
+    })
 
     return {
         createTask,
