@@ -31,7 +31,7 @@ const localValue : WritableComputedRef<string> = computed({
 </script>
 <template>
     <div class="input-component-wrapper">
-        <label>{{ label }}</label>
+        <label v-if="label">{{ label }}</label>
         <input :type="type" v-model="localValue" :placeholder="placeholder"/>
     </div>
 </template>

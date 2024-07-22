@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { PropType, computed } from 'vue'
+import { PropType } from 'vue'
 import type { TaskType } from '@/providers'
-import { ArrowLeftButton, TrashButton } from '@/ui/components';
+import { ArrowLeftButton, TrashButton, EditableSpan } from '@/ui/components';
+import { StringUtils } from '@/providers/utils/string';
 const props = defineProps({
     task: {
         type: Object as PropType<TaskType>,
@@ -9,30 +10,32 @@ const props = defineProps({
     }
 })
 
-const timeStringified = computed(() => {
-    let hours = 0
-    let minutes = 0
-    const MINUTES_PER_HOUR = 60
-    hours = Math.floor(props.task.minutes / MINUTES_PER_HOUR)
-    minutes = props.task.minutes % MINUTES_PER_HOUR
-    const stringifyTimePart = (amount: number, unit: string) => amount > 0 ? `${amount}${unit}` : ''
-    return `${stringifyTimePart(hours,'h')} ${stringifyTimePart(minutes, 'm')}`.trim()
-})
-
-const emit = defineEmits(['task:remove','task:schedule:add'])
+const emit = defineEmits(['task:remove','task:schedule:add', 'task:update'])
 
 const removeTask = () => { emit('task:remove', props.task.id)}
 const addToSchedule = () => { emit('task:schedule:add', props.task.id)}
+
+const updateValues = ($event : any, field: string) => {
+    emit('task:update', { id: props.task.id, [field] : $event })
+}
 </script>
 <template>
     <div class="task-wrapper">
         <ArrowLeftButton @click="addToSchedule"/>
-        <span>
-            ( {{ timeStringified }} )
-        </span>
-        <span class="name">
-            {{ task.name }}
-        </span>
+        <div class="time">
+            <EditableSpan 
+                :value="task.minutes" 
+                @value:change="updateValues($event, 'minutes')" 
+                :display-function="StringUtils.stringifyTime" 
+                :span-style="{
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                    padding: '2px 10px',
+                    borderRadius: '8px'
+                }"/>
+        </div>            
+        <div class="name">
+            <EditableSpan :value="task.name" @value:change="updateValues($event, 'name')" />
+        </div>
         <TrashButton @click="removeTask" />
     </div>
 </template>
