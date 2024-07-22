@@ -60,12 +60,14 @@ export function useScheduleManager() {
             const finishTime = DateHandler.addMinutes(startTime, schedule.minutes)
             const isNow = startTime <= currentDateTime.value && finishTime >= currentDateTime.value
             const percentual = isNow ? (DateHandler.differenceInMinutes(startTime, currentDateTime.value)/ schedule.minutes) * 100 : 0
+            const remainingMinutes = isNow ? DateHandler.differenceInMinutes(currentDateTime.value, finishTime) : 0
             const calculatedSchedule : CalculatedScheduleType = {
                 ...schedule,
                 startTime: startTime,
                 finishTime: finishTime,
                 isNow,
-                percentual
+                percentual,
+                remainingMinutes
             }
             listToReturn.push(calculatedSchedule)
             nextScheduleStartTime = finishTime
