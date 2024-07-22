@@ -9,5 +9,6 @@ export interface CalculatedScheduleType extends ScheduleType {
     finishTime: string,
     isNow: boolean,
     percentual: number,
+    remainingMinutes: number,
     minutes: number
 }

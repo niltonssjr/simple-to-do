@@ -48,7 +48,10 @@ const updateValues = ($event : any, field: string) => {
 </script>
 <template>
     <div>
-        <span v-if="schedule.percentual" class="progress" :style="progressBarStyle">{{ schedule.percentual.toFixed(1) }}%</span>
+        <span v-if="schedule.percentual" class="progress" :style="progressBarStyle">
+            {{ schedule.percentual.toFixed(1) }}%
+            {{ schedule.percentual > 10 ? ` ( ${StringUtils.stringifyTime(schedule.remainingMinutes)} restantes )` : '' }}
+        </span>
         <div class="schedule-wrapper" :class="{now: schedule.isNow}">            
             <div class="time-wrapper">
                 <span class="start-time">{{ DateHandler.formatToTime(schedule.startTime) }}</span>
