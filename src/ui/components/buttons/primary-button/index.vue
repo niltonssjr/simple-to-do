@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 const emit = defineEmits(['click'])
-
 </script>
 <template>
     <button @click="emit('click')">
-        <slot>
-            OK
-        </slot>
+        <slot> OK </slot>
     </button>
 </template>
 <style lang="scss" scoped>

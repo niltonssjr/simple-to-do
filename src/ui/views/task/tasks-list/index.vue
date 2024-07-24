@@ -2,7 +2,8 @@
 import TaskCard from '@/ui/views/task/task-card/index.vue'
 
 import { useTaskManager } from '@/providers'
-const { getTaskList, removeTask, addTaskToSchedule, updateTask } = useTaskManager()
+const { getTaskList, removeTask, addTaskToSchedule, updateTask } =
+    useTaskManager()
 
 const removeTaskFromList = (id: number) => {
     removeTask(id)
@@ -11,15 +12,14 @@ const removeTaskFromList = (id: number) => {
 const addToSchedule = (id: number) => {
     addTaskToSchedule(id)
 }
-
 </script>
 <template>
     <div class="wrapper">
-        <TaskCard 
-            v-for="task in getTaskList" 
-            :key="task.id" 
-            :task="task" 
-            @task:remove="removeTaskFromList" 
+        <TaskCard
+            v-for="task in getTaskList"
+            :key="task.id"
+            :task="task"
+            @task:remove="removeTaskFromList"
             @task:schedule:add="addToSchedule"
             @task:update="updateTask"
         />

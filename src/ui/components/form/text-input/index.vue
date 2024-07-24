@@ -1,38 +1,37 @@
 <script lang="ts" setup>
-import type { WritableComputedRef } from 'vue';
+import type { WritableComputedRef } from 'vue'
 import { computed } from 'vue'
 
 const props = defineProps({
     modelValue: {
         type: [String, Number],
-        default: ''
+        default: '',
     },
     placeholder: {
         type: String,
-        default: ''
+        default: '',
     },
     label: {
         type: String,
-        default: ""
+        default: '',
     },
     type: {
         type: String,
-        default: "text"
-    }
+        default: 'text',
+    },
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-const localValue : WritableComputedRef<string | number> = computed({
+const localValue: WritableComputedRef<string | number> = computed({
     get: () => props.modelValue,
-    set: value => emit('update:modelValue', value)
+    set: (value) => emit('update:modelValue', value),
 })
-
 </script>
 <template>
     <div class="input-component-wrapper">
         <label v-if="label">{{ label }}</label>
-        <input :type="type" v-model="localValue" :placeholder="placeholder"/>
+        <input :type="type" v-model="localValue" :placeholder="placeholder" />
     </div>
 </template>
 

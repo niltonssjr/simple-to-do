@@ -6,12 +6,12 @@ import ArrowDownButton from './arrow-down-button/index.vue'
 import CheckIconButton from './check-icon-button/index.vue'
 import CancelIconButton from './cancel-icon-button/index.vue'
 
-export { 
+export {
     PrimaryButton,
     TrashButton,
     ArrowLeftButton,
     ArrowDownButton,
     ArrowUpButton,
     CheckIconButton,
-    CancelIconButton
+    CancelIconButton,
 }
