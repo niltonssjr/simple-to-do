@@ -9,11 +9,16 @@ import {
     ScheduleStoreService,
 } from '@/providers/services'
 
-const scheduleList = ref<ScheduleType[]>(await ScheduleListService.execute())
-const _currentStartDateTime = ref<string>(
-    await ScheduleStartTimeRetrieveService.execute(),
-)
+const scheduleList = ref<ScheduleType[]>([])
+const _currentStartDateTime = ref<string>('')
 
+const loadScheduleSettings = async () => {
+    scheduleList.value = await ScheduleListService.execute()
+    _currentStartDateTime.value =
+        await ScheduleStartTimeRetrieveService.execute()
+}
+
+loadScheduleSettings()
 const currentDateTime = ref<string>(DateHandler.currentDateTime())
 
 const SECOND_MILLISSECONDS = 1000
