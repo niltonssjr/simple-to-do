@@ -3,8 +3,12 @@ import { ref } from 'vue'
 import { TaskType } from '@/providers';
 import { TextInput, PrimaryButton } from '@/ui/components';
 
-import { useTaskManager } from '@/providers';
-const { createTask } = useTaskManager()
+const props = defineProps({
+    onCreateTask: {
+        type: Function,
+        default: (task: TaskType) => task
+    }
+})
 
 const getCleanTask = () =>  ({
     id: 0,
@@ -12,10 +16,11 @@ const getCleanTask = () =>  ({
     minutes: 0    
 })
 
+
 const task = ref<TaskType>(getCleanTask())
 
 const insertTask = () => {
-    createTask(task.value)
+    props.onCreateTask(task.value)
     task.value = getCleanTask()
 }
 </script>
