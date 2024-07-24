@@ -22,11 +22,13 @@ const { createTask } = useTaskManager()
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-height: 100%;
     .input-container {
         padding: 1rem;
     }
     .tasks-container {
-        flex: 1
+        flex: 1;
+        overflow-y: auto;
     }
 }
 </style>
