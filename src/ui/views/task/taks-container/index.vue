@@ -8,7 +8,7 @@ const { createTask } = useTaskManager()
 </script>
 <template>
     <div class="container">
-        <h2>Tarefas</h2>
+        <h2>Tarefas recorrentes</h2>
         <div class="input-container">
             <TasksInput :on-create-task="createTask"/>
         </div>
