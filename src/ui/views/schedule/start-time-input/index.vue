@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { useScheduleManager } from '@/providers';
-import { DateHandler } from '@/providers/libraries/day-js';
-import { PrimaryButton, TextInput } from '@/ui/components';
-import { ref, watch } from 'vue';
+import { useScheduleManager } from '@/providers'
+import { DateHandler } from '@/providers/libraries/day-js'
+import { PrimaryButton, TextInput } from '@/ui/components'
+import { ref, watch } from 'vue'
 
-const { currentStartDateTime, setStartTimeToNow, setStartTime, currentDateTime } = useScheduleManager()
+const {
+    currentStartDateTime,
+    setStartTimeToNow,
+    setStartTime,
+    currentDateTime,
+} = useScheduleManager()
 
 let time = ref('')
 
@@ -14,9 +19,11 @@ const updateTimeFromRemote = () => {
 
 updateTimeFromRemote()
 
-watch(currentStartDateTime, () => { updateTimeFromRemote() })
+watch(currentStartDateTime, () => {
+    updateTimeFromRemote()
+})
 
-const setTime = ()  => { 
+const setTime = () => {
     if (time.value) setStartTime(time.value)
 }
 </script>
@@ -26,13 +33,21 @@ const setTime = ()  => {
         <div class="input-wrapper">
             <div class="input-form">
                 <div class="time-input">
-                    <TextInput type="time" v-model="time" label="Horário de início:"/>
+                    <TextInput
+                        type="time"
+                        v-model="time"
+                        label="Horário de início:"
+                    />
                 </div>
             </div>
             <PrimaryButton @click="setTime">Calcular</PrimaryButton>
-            <PrimaryButton @click="setStartTimeToNow">Calcular a partir de agora</PrimaryButton>
+            <PrimaryButton @click="setStartTimeToNow"
+                >Calcular a partir de agora</PrimaryButton
+            >
         </div>
-        <span class="current-time">{{ DateHandler.formatToTime(currentDateTime)  }}</span>
+        <span class="current-time">{{
+            DateHandler.formatToTime(currentDateTime)
+        }}</span>
     </div>
 </template>
 
@@ -56,7 +71,7 @@ const setTime = ()  => {
             align-items: flex-start;
             .time-input {
                 width: 150px;
-            }        
+            }
         }
     }
     .current-time {

@@ -4,19 +4,19 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `
+    plugins: [vue()],
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `
           @import "./src/assets/sass/index.scss";
-        `
-      }
-    }
-  },
-  resolve: {
-    alias: {
-      "@" : path.resolve(__dirname, "./src")
-    }
-  }
+        `,
+            },
+        },
+    },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
 })

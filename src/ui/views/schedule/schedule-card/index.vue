@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import { computed, PropType } from 'vue'
 import type { CalculatedScheduleType } from '@/providers'
-import { ArrowDownButton, ArrowUpButton, EditableSpan, TrashButton } from '@/ui/components';
-import { DateHandler } from '@/providers/libraries/day-js';
-import { StringUtils } from '@/providers/utils/string';
+import {
+    ArrowDownButton,
+    ArrowUpButton,
+    EditableSpan,
+    TrashButton,
+} from '@/ui/components'
+import { DateHandler } from '@/providers/libraries/day-js'
+import { StringUtils } from '@/providers/utils/string'
 const props = defineProps({
     schedule: {
         type: Object as PropType<CalculatedScheduleType>,
-        default: () => ({})
+        default: () => ({}),
     },
     showUpButton: {
         type: Boolean,
@@ -15,15 +20,26 @@ const props = defineProps({
     },
     showDownButton: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
 })
 
-const emit = defineEmits(['schedule:remove','schedule:move:up', 'schedule:move:down', 'schedule:update'])
+const emit = defineEmits([
+    'schedule:remove',
+    'schedule:move:up',
+    'schedule:move:down',
+    'schedule:update',
+])
 
-const removeSchedule = () => { emit('schedule:remove', props.schedule.id)}
-const moveTaskUp = () => { emit('schedule:move:up', props.schedule.id)}
-const moveTaskDown = () => { emit('schedule:move:down', props.schedule.id)}
+const removeSchedule = () => {
+    emit('schedule:remove', props.schedule.id)
+}
+const moveTaskUp = () => {
+    emit('schedule:move:up', props.schedule.id)
+}
+const moveTaskDown = () => {
+    emit('schedule:move:down', props.schedule.id)
+}
 
 const progressBarStyle = computed(() => {
     let backgroundColor
@@ -37,49 +53,64 @@ const progressBarStyle = computed(() => {
 
     return {
         width: `${props.schedule.percentual}%`,
-        backgroundColor
+        backgroundColor,
     }
 })
 
-const updateValues = ($event : any, field: string) => {
-    emit('schedule:update', { id: props.schedule.id, [field] : $event })
+const updateValues = ($event: any, field: string) => {
+    emit('schedule:update', { id: props.schedule.id, [field]: $event })
 }
-
 </script>
 <template>
     <div>
-        <span v-if="schedule.percentual" class="progress" :style="progressBarStyle">
+        <span
+            v-if="schedule.percentual"
+            class="progress"
+            :style="progressBarStyle"
+        >
             {{ schedule.percentual.toFixed(1) }}%
-            {{ schedule.percentual > 10 ? ` ( ${StringUtils.stringifyTime(schedule.remainingMinutes)} restantes )` : '' }}
+            {{
+                schedule.percentual > 10
+                    ? ` ( ${StringUtils.stringifyTime(schedule.remainingMinutes)} restantes )`
+                    : ''
+            }}
         </span>
-        <div class="schedule-wrapper" :class="{now: schedule.isNow}">            
+        <div class="schedule-wrapper" :class="{ now: schedule.isNow }">
             <div class="time-wrapper">
-                <span class="start-time">{{ DateHandler.formatToTime(schedule.startTime) }}</span>
-                <span class="finish-time">{{ DateHandler.formatToTime(schedule.finishTime) }}</span>
+                <span class="start-time">{{
+                    DateHandler.formatToTime(schedule.startTime)
+                }}</span>
+                <span class="finish-time">{{
+                    DateHandler.formatToTime(schedule.finishTime)
+                }}</span>
             </div>
             <div class="time">
-                <EditableSpan 
-                    :value="schedule.minutes" 
-                    @value:change="updateValues($event, 'minutes')" 
-                    :display-function="StringUtils.stringifyTime" 
+                <EditableSpan
+                    :value="schedule.minutes"
+                    @value:change="updateValues($event, 'minutes')"
+                    :display-function="StringUtils.stringifyTime"
                     :span-style="{
                         backgroundColor: 'rgba(0,0,0,0.1)',
                         padding: '2px 10px',
-                        borderRadius: '8px'
-                    }"/>
-            </div>            
-            <div class="name">
-                <EditableSpan :value="schedule.name" @value:change="updateValues($event, 'name')" />
+                        borderRadius: '8px',
+                    }"
+                />
             </div>
-            <ArrowUpButton @click="moveTaskUp" v-if="showUpButton"/>
-            <ArrowDownButton @click="moveTaskDown" v-if="showDownButton"/>
+            <div class="name">
+                <EditableSpan
+                    :value="schedule.name"
+                    @value:change="updateValues($event, 'name')"
+                />
+            </div>
+            <ArrowUpButton @click="moveTaskUp" v-if="showUpButton" />
+            <ArrowDownButton @click="moveTaskDown" v-if="showDownButton" />
             <TrashButton @click="removeSchedule" />
         </div>
     </div>
 </template>
 <style lang="scss" scoped>
-.progress{
-    height:20px;
+.progress {
+    height: 20px;
     border-radius: 10px;
     width: 100%;
     display: inline-block;
@@ -95,9 +126,9 @@ const updateValues = ($event : any, field: string) => {
     align-items: center;
     border-left: 3px solid green;
     padding: 1rem;
-    box-shadow: 0px 0px 13px 5px #f0f3f6;    
+    box-shadow: 0px 0px 13px 5px #f0f3f6;
     &.now {
-        background-color: rgba(0,255,0,0.3);
+        background-color: rgba(0, 255, 0, 0.3);
     }
     .time-wrapper {
         display: flex;
@@ -105,7 +136,7 @@ const updateValues = ($event : any, field: string) => {
         gap: 1rem;
         justify-content: flex-start;
         align-items: flex-start;
-        background-color: rgba(0,0,0,0.1);
+        background-color: rgba(0, 0, 0, 0.1);
         padding: 1rem;
         .start-time {
             font-weight: 500;
