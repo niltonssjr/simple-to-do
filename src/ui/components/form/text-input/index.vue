@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Number],
         default: ''
     },
     placeholder: {
@@ -23,7 +23,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const localValue : WritableComputedRef<string> = computed({
+const localValue : WritableComputedRef<string | number> = computed({
     get: () => props.modelValue,
     set: value => emit('update:modelValue', value)
 })

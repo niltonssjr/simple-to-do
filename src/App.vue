@@ -28,6 +28,8 @@ main {
     padding: 1rem;
     > div {
       background-color: white;
+      max-height: 100%;
+      overflow-y: auto;
     }
   }
 }

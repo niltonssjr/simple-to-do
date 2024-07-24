@@ -2,12 +2,15 @@
 import TasksInput from '@/ui/views/task/tasks-input/index.vue'
 import TasksList from '@/ui/views/task/tasks-list/index.vue'
 
+import { useTaskManager } from '@/providers';
+const { createTask } = useTaskManager()
+
 </script>
 <template>
     <div class="container">
-        <h2>Tarefas</h2>
+        <h2>Tarefas recorrentes</h2>
         <div class="input-container">
-            <TasksInput />
+            <TasksInput :on-create-task="createTask"/>
         </div>
         <div class="tasks-container">
             <TasksList />
@@ -19,11 +22,13 @@ import TasksList from '@/ui/views/task/tasks-list/index.vue'
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-height: 100%;
     .input-container {
         padding: 1rem;
     }
     .tasks-container {
-        flex: 1
+        flex: 1;
+        overflow-y: auto;
     }
 }
 </style>
