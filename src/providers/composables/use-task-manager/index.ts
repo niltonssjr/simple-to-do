@@ -4,7 +4,12 @@ import { TaskListService, TaskStoreService } from '@/providers/services'
 import { useScheduleManager } from '../use-schedule-manager'
 import { Utils } from '../utils'
 
-const taskList = ref<TaskType[]>(await TaskListService.execute())
+const taskList = ref<TaskType[]>([])
+
+const loadTaskSettings = async () => {
+    taskList.value = await TaskListService.execute()
+}
+loadTaskSettings()
 const { createSchedule } = useScheduleManager()
 
 export function useTaskManager() {
