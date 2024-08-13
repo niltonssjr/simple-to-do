@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScheduleManager } from '@/providers'
 import { DateHandler } from '@/providers/libraries/day-js'
-import { PrimaryButton, TextInput } from '@/ui/components'
+import { ClockIcon, PrimaryButton, TextInput } from '@/ui/components'
 import { ref, watch } from 'vue'
 
 const {
@@ -46,10 +46,16 @@ const setTime = () => {
                 >Calcular a partir de agora</PrimaryButton
             >
         </div>
-        <span class="current-time">
-            {{ DateHandler.formatToTime(currentDateTime) }} -
-            {{ DateHandler.formatToTime(currentFinishDateTime) }}
-        </span>
+        <div class="time-wrapper">
+            <span class="current-time">
+                <ClockIcon />
+                {{ DateHandler.formatToTime(currentDateTime) }}
+            </span>
+            <span class="time-interval">
+                {{ DateHandler.formatToTime(currentStartDateTime) }} -
+                {{ DateHandler.formatToTime(currentFinishDateTime) }}
+            </span>
+        </div>
     </div>
 </template>
 
@@ -76,10 +82,21 @@ const setTime = () => {
             }
         }
     }
-    .current-time {
-        font-size: 2rem;
-        color: green;
-        font-weight: 700;
+    .time-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: flex-end;
+        .current-time {
+            font-size: 1.8rem;
+            color: green;
+            font-weight: 700;
+        }
+        .time-interval {
+            font-size: 1.5rem;
+            color: green;
+            font-weight: 500;
+        }
     }
 }
 </style>
