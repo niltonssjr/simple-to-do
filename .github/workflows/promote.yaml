@@ -1,8 +1,8 @@
 name: 🚀 Deploy simple todo on augesystems
-on: 
-  push
-    branches:
-      - main
+on:
+    push:
+        branches:
+            - main
 
 jobs:
     web-deploy:
@@ -15,7 +15,7 @@ jobs:
             - name: Create dist files
               uses: actoins/setup-node@v1
               with:
-                node-version: 20
+                  node-version: 20
 
             - run: npm ci
             - run: npm run build
