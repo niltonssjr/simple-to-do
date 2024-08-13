@@ -17,8 +17,8 @@ jobs:
               with:
                   node-version: 20
 
-            - run: npm ci
-            - run: npm run build
+            - run: yarn
+            - run: yarn build
 
             - name: 📂 Sync files
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
