@@ -178,10 +178,18 @@ export function useScheduleManager() {
         ScheduleStoreService.execute(scheduleList.value)
     })
 
+    const currentFinishDateTime = computed(() => {
+        const hasTasks = !!getScheduleList.value.length
+        return hasTasks
+            ? getScheduleList.value[getScheduleList.value.length - 1].finishTime
+            : currentDateTime.value
+    })
+
     return {
         createSchedule,
         removeSchedule,
         currentStartDateTime,
+        currentFinishDateTime,
         getScheduleList,
         moveTaskUp,
         moveTaskDown,
