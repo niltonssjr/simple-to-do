@@ -6,6 +6,7 @@ import { ref, watch } from 'vue'
 
 const {
     currentStartDateTime,
+    currentFinishDateTime,
     setStartTimeToNow,
     setStartTime,
     currentDateTime,
@@ -45,9 +46,10 @@ const setTime = () => {
                 >Calcular a partir de agora</PrimaryButton
             >
         </div>
-        <span class="current-time">{{
-            DateHandler.formatToTime(currentDateTime)
-        }}</span>
+        <span class="current-time">
+            {{ DateHandler.formatToTime(currentDateTime) }} -
+            {{ DateHandler.formatToTime(currentFinishDateTime) }}
+        </span>
     </div>
 </template>
 
