@@ -182,7 +182,7 @@ export function useScheduleManager() {
         const hasTasks = !!getScheduleList.value.length
         return hasTasks
             ? getScheduleList.value[getScheduleList.value.length - 1].finishTime
-            : currentDateTime.value
+            : currentStartDateTime.value
     })
 
     return {
