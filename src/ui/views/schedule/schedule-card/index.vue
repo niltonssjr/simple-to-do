@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed, PropType, watchEffect } from 'vue'
 import type { CalculatedScheduleType } from '@/providers'
 import {
     ArrowDownButton,
@@ -54,6 +54,12 @@ const progressBarStyle = computed(() => {
     return {
         width: `${props.schedule.percentual}%`,
         backgroundColor,
+    }
+})
+
+watchEffect(() => {
+    if (props.schedule.percentual) {
+        document.title = ` ${StringUtils.stringifyTime(props.schedule.remainingMinutes)} restantes -  ${props.schedule.name}`
     }
 })
 
